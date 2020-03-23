@@ -9,7 +9,7 @@ library(dygraphs)
 
 # Paths ----------------------------------------------------------------------------------------------------------------
 config <- read_yaml("../config.yml")
+dir_env <<- new.env()
 
-dir_env <<- list()
-dir_env["root"] = config$root
-dir_env["data"] = paste0(config$root, config$data$path)
+assign("root", config$root, dir_env)
+assign("data", paste0(config$root, config$data$path), dir_env)

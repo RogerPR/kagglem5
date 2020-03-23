@@ -2,8 +2,7 @@
 ### Main M5 project Viz ################################################################################################
 ########################################################################################################################
 ##### Main M5 project Viz ######
-source("config.R")
-source("utils.R")
+devtools::load_all()
 
 ### Load Data ###
 calendar               = loadm5("calendar.csv")
@@ -16,4 +15,3 @@ prod_ts = data.table(t(sales_train_validation[, 7:ncol(sales_train_validation)])
 names(prod_ts) = sales_train_validation[, id]
 
 dy_plot(prod_ts, 1:3, 365)
-

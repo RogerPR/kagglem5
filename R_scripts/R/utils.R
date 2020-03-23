@@ -25,7 +25,7 @@ loadm5 <- function(file) {
 #'
 #' @return None
 dy_plot <- function(prod_ts, ids, rolling_period=1){
-  ts1 = data.table(cbind(data.table(dates = 1:nrow(prod), prod[, ids, with=FALSE])))
+  ts1 = data.table(cbind(data.table(dates = 1:nrow(prod_ts), prod_ts[, ids, with=FALSE])))
   names(ts1) = c("dates", names(prod_ts)[ids])
   
   dygraph(ts1)
