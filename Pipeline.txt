@@ -1,0 +1,21 @@
+TODO
+- Define agreggation criteria (Encoder/decoder?)
+- Define agregated demand prediction model
+- Define way to split aggregated prediction
+- Define sales / no sales model agregation level
+- Define binary sales/no sales prediction model
+- Adapt notebooks / benchmark evaluation metric
+- Implement definitions...
+
+ONGOING
+- Implement single TS analytic board (with features)
+-- Adapt calendar variables
+-- Adapt sell prices variables
+-- Add fourier sasonality?
+
+DONE
+- Viz with dygraphs
+- Benchmark on same sales last 28 days (To be improved with weekdays?)
+- Define agregation level -> dept + store 
+- Implement agregation function: sales (Sum right now)
+

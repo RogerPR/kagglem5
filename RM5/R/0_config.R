@@ -3,13 +3,16 @@
 ########################################################################################################################
 
 # Imports --------------------------------------------------------------------------------------------------------------
-#☺ library(yaml)
+# library(yaml)
 library(data.table)
 library(dygraphs)
 
 # Paths ----------------------------------------------------------------------------------------------------------------
-config <- yaml::read_yaml("../config.yml")
-dir_env <<- new.env()
-
-assign("root", config$root, dir_env)
-assign("data", paste0(config$root, config$data$path), dir_env)
+.onLoad <- function(libname=NULL, pkgname="RM5") {
+  config <- yaml::read_yaml("../config.yml")
+  dir_env <<- new.env()
+  
+  assign("root", config$root, dir_env)
+  assign("data", paste0(config$root, config$data$path), dir_env)
+  assign("rdata", paste0(config$root, config$data$r_data_path), dir_env)
+}

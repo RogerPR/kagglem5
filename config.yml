@@ -2,3 +2,4 @@ root: 'C:/Users/roger/Desktop/projects/Kaggle_M5'
 
 data:
     path: '/data'
+    r_data_path: '/data/rdata'
