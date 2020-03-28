@@ -6,13 +6,19 @@ TODO
 - Define binary sales/no sales prediction model
 - Adapt notebooks / benchmark evaluation metric
 - Implement definitions...
-
-ONGOING
 - Implement single TS analytic board (with features)
 -- Adapt calendar variables
 -- Adapt sell prices variables
 -- Add fourier sasonality?
 
+ONGOING
+- Implement workflow structure with vanilla methods
+-- Data processing
+-- Aggregated prediction
+-- Open prod/store
+-- Split prediction
+-- Business rules
+ 
 DONE
 - Viz with dygraphs
 - Benchmark on same sales last 28 days (To be improved with weekdays?)

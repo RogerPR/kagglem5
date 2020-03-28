@@ -86,12 +86,15 @@ dy_format_data <- function(dt, day_vars){
 #'
 #' @param pred 
 #' @param real 
-#' @param id_vars
 #'
 #' @return RMSE
-eval_m5_rmse <- function(pred, real, id_vars) {
-  comp = merge(pred, real, by = id_vars)
-  comp[, (id_vars) := NULL]
+eval_m5_rmse <- function(pred, real) {
+  # If there are remaining ID vars, delete them
+  pred[, (c("item_id", "dept_id", "cat_id", "store_id", "state_id")) := NULL]
+  real[, (c("item_id", "dept_id", "cat_id", "store_id", "state_id")) := NULL]
+  
+  comp = merge(pred, real, by = "id")
+  comp[, id := NULL]
   
   m1 = as.matrix(comp)[, 1:28]
   m2 = as.matrix(comp)[, 29:56]
@@ -145,12 +148,11 @@ split_train_test_temporally <- function(train, id_vars, day_vars) {
 #' (Include different aggregation methods????)
 #'
 #' @param dt
-#' @param level: vector of strings corresponding to aggregation levels
 #' @param day_vars
+#' @param level: vector of strings corresponding to aggregation levels
 #'
 #' @return None
-aggregate_sales <- function(dt, level = c(), day_vars) {
-  
+expl_aggregate_sales <- function(dt, day_vars, level = c()) {  
   agg_dt <- dt[, lapply(.SD, sum, na.rm=TRUE), .SDcols = day_vars, by = level]
   
   if (length(level) == 0) {
@@ -158,7 +160,6 @@ aggregate_sales <- function(dt, level = c(), day_vars) {
   } else {
     agg_dt[, id := apply(agg_dt[, level, with=FALSE], 1, paste, collapse="_")]
   }
-
   
   return(agg_dt)
 }

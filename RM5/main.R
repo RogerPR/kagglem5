@@ -42,20 +42,46 @@ sales_train_validation[, .(store_id = unique(store_id)), state_id]
 sales_train_validation[, .(dept_id = unique(dept_id)), cat_id]
 
 # Aggregated demand plotting
-agg_dt <- aggregate_sales(sales_train_validation, level=c(), day_vars)
+agg_dt <- expl_aggregate_sales(sales_train_validation, level=c(), day_vars)
 dy_plot(dy_format_data(agg_dt, day_vars),  rolling_period=21)
 
-agg_dt <- aggregate_sales(sales_train_validation, level=c("cat_id"), day_vars)
+agg_dt <- expl_aggregate_sales(sales_train_validation, level=c("cat_id"), day_vars)
 dy_plot(dy_format_data(agg_dt, day_vars),  rolling_period=21)
 
-agg_dt <- aggregate_sales(sales_train_validation, level=c("state_id"), day_vars)
+agg_dt <- expl_aggregate_sales(sales_train_validation, level=c("state_id"), day_vars)
 dy_plot(dy_format_data(agg_dt, day_vars),  rolling_period=21)
 
-agg_dt <- aggregate_sales(sales_train_validation, level=c("cat_id", "state_id"), day_vars)
+agg_dt <- expl_aggregate_sales(sales_train_validation, level=c("cat_id", "state_id"), day_vars)
 dy_plot(dy_format_data(agg_dt, day_vars),  rolling_period=21)
 
 ### Real execution -----------------------------------------------------------------------------------------------------
-agg_dt <- aggregate_sales(train_dt, level=c("dept_id", "store_id"), day_vars_train)
+### 1. Prepare data ----------------------------------------------------------------------------------------------------
+train_dt <- loadm5("train_dt")
+agg_dt <- aggregate_sales(train_dt, level = c("dept_id", "store_id"), id_vars, day_vars_train,
+                          add_sell_prices = TRUE, sell_prices, calendar)
 
-create_analytic_board_single_ts()
+master_board <- create_analytic_board(agg_dt, calendar)
+
+### 2. Predict grouped sales -------------------------------------------------------------------------------------------
+master_board <- loadm5("master_board")
+
+grouped_predictions <- predict_grouped_sales_loop(master_board)
+
+### 3. Disaggregate prediction -----------------------------------------------------------------------------------------
+grouped_predictions <- loadm5("grouped_predictions")
+train_dt <- loadm5("train_dt") 
+
+open_ids <- find_open_prod_store_day(train_dt)
+
+open_ids <- loadm5("open_ids")
+id_dict <- loadm5("id_dict")
+prod_store_predictions <- split_prediction(grouped_predictions, open_ids, id_dict)
+
+### 4. Format and business rules ---------------------------------------------------------------------------------------
+prod_store_predictions <- loadm5("prod_store_predictions")
+prod_store_predictions_end <- apply_business_rules(prod_store_predictions)
+
+
+##
+eval_m5_rmse(prod_store_predictions_end, list_train_test$test_dt, id_vars)
 
