@@ -90,8 +90,11 @@ dy_format_data <- function(dt, day_vars){
 #' @return RMSE
 eval_m5_rmse <- function(pred, real) {
   # If there are remaining ID vars, delete them
-  pred[, (c("item_id", "dept_id", "cat_id", "store_id", "state_id")) := NULL]
-  real[, (c("item_id", "dept_id", "cat_id", "store_id", "state_id")) := NULL]
+  suppressWarnings({
+    pred[, (c("item_id", "dept_id", "cat_id", "store_id", "state_id")) := NULL]
+    real[, (c("item_id", "dept_id", "cat_id", "store_id", "state_id")) := NULL]
+  })
+
   
   comp = merge(pred, real, by = "id")
   comp[, id := NULL]
@@ -131,7 +134,7 @@ create_vanilla_prediction <- function(train, id_vars) {
 #' @return None
 split_train_test_temporally <- function(train, id_vars, day_vars) {
   
-  train_dt = train[, 1:(ncol(train)-27), with=FALSE]
+  train_dt = train[, 1:(ncol(train)-28), with=FALSE]
   test_dt = data.table(cbind(train[, id_vars, with=FALSE],
                              train[, (ncol(train)-27):ncol(train), with=FALSE]))
   

@@ -1,6 +1,6 @@
 import yaml
 
-with open("./config.yml") as file:
+with open("../config.yml") as file:
     cfg = yaml.safe_load(file)
 
 DIR_ENV = dict()

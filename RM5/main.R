@@ -83,5 +83,7 @@ prod_store_predictions_end <- apply_business_rules(prod_store_predictions)
 
 
 ##
-eval_m5_rmse(prod_store_predictions_end, list_train_test$test_dt, id_vars)
+prod_store_predictions_end <- loadm5("prod_store_predictions_end")
+test_dt <- loadm5("test_dt")
+eval_m5_rmse(prod_store_predictions_end, test_dt)
 
