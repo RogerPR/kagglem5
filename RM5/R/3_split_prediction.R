@@ -33,7 +33,10 @@ split_prediction <- function(grouped_predictions, open_ids, id_dict) {
   # Compute product weights
   prod_store_predictions <- add_product_weights(prod_store_predictions)
   prod_store_predictions[, prod_sales := round(pred * weight, 0)]
-  prod_store_predictions <- fix_round(prod_store_predictions)
+  
+  # No need to round?
+  # prod_store_predictions[, prod_sales := round(pred * weight, 0)]
+  # prod_store_predictions <- fix_round(prod_store_predictions)
     
   savem5(prod_store_predictions, "prod_store_predictions")
   

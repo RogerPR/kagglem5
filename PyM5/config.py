@@ -6,3 +6,4 @@ with open("../config.yml") as file:
 DIR_ENV = dict()
 DIR_ENV["root"] = cfg["root"]
 DIR_ENV["data"] = cfg["root"] + cfg["data"]["path"]
+DIR_ENV["py_data"] = cfg["root"] + cfg["data"]["py_data_path"]

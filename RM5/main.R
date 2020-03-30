@@ -25,9 +25,9 @@ day_vars_test = names(test_dt)[7:ncol(test_dt)]
 ###  Benchmark ---------------------------------------------------------------------------------------------------------
 pred = create_vanilla_prediction(list_train_test$train_dt, id_vars)
 
-eval_m5_rmse(pred, list_train_test$test_dt, id_vars)
+eval_m5_rmse(pred, list_train_test$test_dt)
 
-### Exploration --------------------------------------------------------------------------------------------------------
+  ### Exploration --------------------------------------------------------------------------------------------------------
 # Basic instances plotting
 prod_ts = dy_format_data(sales_train_validation, day_vars)
 dy_plot(prod_ts, 1:3, 365)
