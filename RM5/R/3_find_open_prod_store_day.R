@@ -5,7 +5,7 @@
 #' @param train_dt
 #' @param h
 #'
-#' @return master board
+#' @return 
 find_open_prod_store_day <- function(train_dt, h=28) {
   # TODO
   open_ids <- list()

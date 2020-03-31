@@ -13,6 +13,11 @@ def aggregate_sales(df, level, id_vars, sell_prices, calendar):
     :return: grouped_df
     """
 
+    # Save grouping relationship to be used when splitting
+    id_dict = df.loc[:, ["id"] + level]
+    id_dict["ts_id"] = id_dict.loc[:, level].apply(lambda row: '_'.join(row.values), axis=1)
+    utils.savem5(id_dict, "id_dict")
+
     # Add day to prices
     sell_prices = sell_prices.merge(calendar.loc[:, ["wm_yr_wk", "d"]], on=["wm_yr_wk"])
     sell_prices.drop("wm_yr_wk", axis=1, inplace=True)
@@ -24,6 +29,7 @@ def aggregate_sales(df, level, id_vars, sell_prices, calendar):
     # Group by level (always add day to the grouping)
     grouping_func = {'sales': 'sum', 'sell_price': np.nanmean}
     agg_df = melted_df.groupby(level + ["d"]).agg(grouping_func).reset_index()
+    agg_df["ts_id"] = agg_df.loc[:, level].apply(lambda row: '_'.join(row.values), axis=1)
 
     utils.savem5(agg_df, "agg_df")
-    return agg_df
+    return agg_df, id_dict

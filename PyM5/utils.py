@@ -1,6 +1,7 @@
 import pandas as pd
-from config import DIR_ENV
+import numpy as np
 import pickle
+from config import DIR_ENV
 
 
 def savem5(obj, file):
@@ -60,4 +61,24 @@ def split_train_test_temporally(df, id_vars, day_vars):
     train_df = df.iloc[:, :-28]
     test_df = pd.concat([df.loc[:, id_vars], df.loc[:, day_vars[-28:]]], axis=1)
 
+    savem5(train_df, "train_df")
+    savem5(test_df, "test_df")
+
     return train_df, test_df
+
+
+def eval_m5_rmse(pred, real):
+    """
+    Compute RMSE for 28 days prediction
+    :param pred:
+    :param real:
+    :return:
+    """
+    pred.sort_values("id", inplace=True)
+    real.sort_values("id", inplace=True)
+
+    A = np.array(pred.iloc[:, -28:])
+    B = np.array(real.iloc[:, -28:])
+    mse = ((A - B) ** 2).mean(axis=None)
+
+    return np.sqrt(mse)
