@@ -12,16 +12,16 @@ TODO
 -- Add fourier sasonality?
 
 ONGOING
-- Implement workflow structure with vanilla methods
--- Data processing
--- Aggregated prediction
--- Open prod/store
--- Split prediction
--- Business rules
+- Non vanilla implementation: 4 RF (1 per week ahead) + ?(week2day) + last month active items + rolling avg weights
  
 DONE
 - Viz with dygraphs
 - Benchmark on same sales last 28 days (To be improved with weekdays?)
 - Define agregation level -> dept + store 
 - Implement agregation function: sales (Sum right now)
-
+- Implement workflow structure with vanilla methods
+-- Data processing
+-- Aggregated prediction
+-- Open prod/store
+-- Split prediction
+-- Business rules

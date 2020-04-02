@@ -30,6 +30,7 @@ split_prediction <- function(grouped_predictions, open_ids, id_dict) {
                                   by=c("id", "day_ahead"),
                                   all.x=TRUE)
   
+  prod_store_predictions[is.na(is_open), is_open := FALSE]
   # Compute product weights
   prod_store_predictions <- add_product_weights(prod_store_predictions)
   prod_store_predictions[, prod_sales := pred * weight]

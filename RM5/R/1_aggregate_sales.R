@@ -36,8 +36,18 @@ aggregate_sales <- function(dt, id_vars, day_vars, level = c(), add_sell_prices=
   
   agg_dt[, ts_id := apply(agg_dt[, level, with=FALSE], 1, paste0, collapse="_")]
   
-  savem5(agg_dt, "agg_dt")
   
+  # EXTRA: Compute prod-store weights
+  melted_dt[, day_id := as.numeric(substring(day, 3))]
+  melted_dt[, level_sales := sum(sales), by = c(level, "day")]
+  melted_dt[, w_sales := sales/level_sales]
+  store_item_weights = melted_dt[day_id > (max(melted_dt[, day_id]) - 365),
+                                 .(mean_w = mean(w_sales, na.rm=TRUE), sd_w = sd(w_sales, na.rm=TRUE)),
+                                 id]
+  savem5(store_item_weights, "store_item_weights")
+  
+  savem5(agg_dt, "agg_dt")
+
   return(agg_dt)
 
 }

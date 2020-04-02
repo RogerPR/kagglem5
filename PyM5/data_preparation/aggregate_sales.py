@@ -26,7 +26,7 @@ def aggregate_sales(df, level, id_vars, sell_prices, calendar):
     melted_df = pd.melt(df, id_vars, var_name="d", value_name="sales")
     melted_df = melted_df.merge(sell_prices, how="left", on=["store_id", "item_id", "d"])
 
-    # Group by level (always add day to the grouping)
+    # Group by level (always add day to the grouping)vda
     grouping_func = {'sales': 'sum', 'sell_price': np.nanmean}
     agg_df = melted_df.groupby(level + ["d"]).agg(grouping_func).reset_index()
     agg_df["ts_id"] = agg_df.loc[:, level].apply(lambda row: '_'.join(row.values), axis=1)

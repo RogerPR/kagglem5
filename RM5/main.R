@@ -60,7 +60,6 @@ train_dt <- loadm5("train_dt")
 agg_dt <- aggregate_sales(train_dt, level = c("dept_id", "store_id"), id_vars, day_vars_train,
                           add_sell_prices = TRUE, sell_prices, calendar)
 
-grouped_predictions
 master_board <- create_analytic_board(agg_dt, calendar)
 
 ### 2. Predict grouped sales -------------------------------------------------------------------------------------------

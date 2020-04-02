@@ -1,3 +1,22 @@
+#' Predict grouped sales
+#'
+#' Predict grouped sales
+#'
+#' @param board
+#'
+#' @return daily prediction
+predict_grouped_sales <- function(board, h=28) {
+  
+  
+  # pred = pred_grouped_sales_vanilla(board, h)
+  pred = pred_grouped_sales_weekly_rf(board, h)
+
+  
+  
+  return(pred)
+}
+
+
 #' Predict grouped sales loop
 #'
 #' Predict grouped sales for each TS
@@ -11,7 +30,12 @@ predict_grouped_sales_loop <- function(master_board, h=28) {
   
   grouped_predictions = data.table()
   
+  counter = 1
   for (id in ts_ids) {
+    
+    print(paste0("Predicting ", id, " -- ", counter, " / ", length(ts_ids)))
+    counter = counter + 1
+    
     board = master_board[ts_id == id]
     
     ts_pred = predict_grouped_sales(board, h)
@@ -22,19 +46,4 @@ predict_grouped_sales_loop <- function(master_board, h=28) {
   savem5(grouped_predictions, "grouped_predictions")
   
   return(grouped_predictions)
-}
-
-
-#' Predict grouped sales
-#'
-#' Predict grouped sales
-#'
-#' @param board
-#'
-#' @return predictions
-predict_grouped_sales <- function(board, h=28) {
-  # TODO - implement prediction algo
-  pred = tail(board[, sales], 28)
-  
-  return(pred)
 }
